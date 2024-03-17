@@ -48,7 +48,6 @@ fn is_valid(board: &Vec<Vec<char>>, selected: &Vec<bool>) -> bool {
     let mut s_count = 0;
     let mut start = None;
     let mut visited = vec![vec![false; 5]; 5];
-    let mut selected_positions = 0; // 실제로 선택된 위치의 수를 추적합니다.
 
     for i in 0..25 {
         if selected[i] {
@@ -61,7 +60,6 @@ fn is_valid(board: &Vec<Vec<char>>, selected: &Vec<bool>) -> bool {
                 start = Some((x, y));
             }
             visited[x][y] = true;
-            selected_positions += 1; // 선택된 위치의 수를 증가시킵니다.
         }
     }
 
@@ -76,7 +74,7 @@ fn is_valid(board: &Vec<Vec<char>>, selected: &Vec<bool>) -> bool {
     if let Some(s) = start {
         queue.push_back(s);
         visited[s.0][s.1] = false; // 시작점을 방문 처리합니다.
-        seen += 1;
+        seen += 1; // 시작점도 방문한 위치이므로 +1
         while let Some((x, y)) = queue.pop_front() {
             for &(dx, dy) in &[(0, 1), (1, 0), (0, -1), (-1, 0)] {
                 let nx = x as i32 + dx;
@@ -92,5 +90,5 @@ fn is_valid(board: &Vec<Vec<char>>, selected: &Vec<bool>) -> bool {
 
     // 모든 선택된 학생들이 서로 이어져 있어야 합니다.
     // BFS를 통해 방문한 위치의 수(`seen`)가 선택된 위치의 총 수(`selected_positions`)와 일치해야 합니다.
-    seen == selected_positions
+    seen == 7
 }
